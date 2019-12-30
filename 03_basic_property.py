@@ -40,7 +40,7 @@ print(c.dtype == tf.string)
 # Convert
 # int <-> float
 print('Convert int to float: ')
-a = np.arange(4)
+a = np.arange(5)
 print(a.dtype)
 
 aa = tf.convert_to_tensor(a)
@@ -77,10 +77,11 @@ print(b.dtype)
 print(b.name)
 
 b = tf.Variable(a, name='input_data')
+print(b)
 print(b.name)
 print(b.trainable)
 
-print(isinstance(b, tf.Tensor))
+print(isinstance(b, tf.Tensor))  # 返回为False，出错了，不推荐使用
 print(isinstance(b, tf.Variable))
 print(tf.is_tensor(b))
 
