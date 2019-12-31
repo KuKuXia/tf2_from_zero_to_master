@@ -69,6 +69,17 @@ for epoch in range(10):  # iterate db for 10
 
         # compute gradients
         grads = tape.gradient(loss, [w1, b1, w2, b2, w3, b3])
+
+        # gradient clipping
+        print('==before==')
+        for g in grads:
+            print(tf.norm(g))
+        grads, _ = tf.clip_by_global_norm(grads, 0.5)
+
+        print('==after==')
+        for g in grads:
+            print(tf.norm(g))
+
         # print(grads)
         # w1 = w1 - lr * w1_grad
         w1.assign_sub(lr * grads[0])
