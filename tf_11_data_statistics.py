@@ -11,6 +11,7 @@ os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
 print('-' * 20, '\nL2 norm')
 a = tf.ones([2, 2])
 print(tf.norm(a))
+print(tf.norm(a, ord=2, axis=1))
 print(tf.sqrt(tf.reduce_sum(tf.square(a))))
 
 b = tf.ones([4, 28, 28, 3])
@@ -19,15 +20,15 @@ print(tf.sqrt(tf.reduce_sum(tf.square(b))))
 
 # L1 Norm
 print('-' * 20, '\n L1 norm')
-print(tf.norm(a, ord=2, axis=1))
 print(tf.norm(a, ord=1))
 print(tf.norm(a, ord=1, axis=0))
 print(tf.norm(a, ord=1, axis=1))
 
-# reduce_min/max/mean
+# reduce_min/max/mean: reduce的意思是提醒会产生降维操作
 print('-' * 20, '\ntf.reduce_min/max/mean/sum')
 a = tf.random.normal([4, 10])
 print(a)
+# 不指定维度axis，默认是求整个张量a中的统计数据
 print(tf.reduce_min(a), tf.reduce_max(a), tf.reduce_mean(a), tf.reduce_sum(a))
 
 # argmax/argmin
