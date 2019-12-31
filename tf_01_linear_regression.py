@@ -62,7 +62,9 @@ def run():
           format(num_iterations, b, w,
                  compute_error_for_line_given_points(b, w, points))
           )
+    return np.round(b, 3), np.round(w, 3)
 
 
 if __name__ == '__main__':
-    run()
+    b, w = run()
+    print(b, w)
