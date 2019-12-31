@@ -15,7 +15,7 @@ print(f'b//a: {b // a}\nb%a: {b % a}')
 print(tf.math.log(a))
 print(tf.exp(a))
 
-# log2, log10
+# log2, log10   log_10(b)/log_10(c) = log_c(b)
 print(tf.math.log(8.0) / tf.math.log(2.))
 print(tf.math.log(100.0) / tf.math.log(10.))
 
