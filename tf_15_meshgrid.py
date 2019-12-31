@@ -36,6 +36,7 @@ plt.figure('plot 2d func value')
 plt.imshow(z, origin='lower', interpolation='none')
 plt.colorbar()
 
+# 等高线描绘
 plt.figure('plot 2d func contour')
 plt.contour(point_x, point_y, z)
 plt.colorbar()
