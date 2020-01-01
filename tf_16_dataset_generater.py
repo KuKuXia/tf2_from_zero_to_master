@@ -59,8 +59,8 @@ print(f'shape of res[0]: {res[0].shape}, res[1]: {res[1].shape}')
 #     next(db_iter) # 会报错
 
 # .repeat
-db4 = db3.repeat()
-db4 = db3.repeat(2)
+db4 = db3.repeat()  # 永远不会退出
+db4 = db3.repeat(2)  # 重复整个数据集2次
 
 
 # Simple example
