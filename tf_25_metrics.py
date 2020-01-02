@@ -1,23 +1,20 @@
-import datetime
 import os
 
 import tensorflow as tf
-from tensorflow.keras import datasets, layers, optimizers, Sequential
-from utils.common import plot_to_image, image_grid, preprocess
-
-assert tf.__version__.startswith('2.')
+from tensorflow.keras import datasets, layers, optimizers, Sequential, metrics
+from utils.common import preprocess
 
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
 
-batch_size = 128
+batchsz = 128
 (x, y), (x_val, y_val) = datasets.mnist.load_data()
 print('datasets:', x.shape, y.shape, x.min(), x.max())
 
 db = tf.data.Dataset.from_tensor_slices((x, y))
-db = db.map(preprocess).shuffle(60000).batch(batch_size).repeat(10)
+db = db.map(preprocess).shuffle(60000).batch(batchsz).repeat(10)
 
 ds_val = tf.data.Dataset.from_tensor_slices((x_val, y_val))
-ds_val = ds_val.map(preprocess).batch(batch_size, drop_remainder=True)
+ds_val = ds_val.map(preprocess).batch(batchsz)
 
 network = Sequential([layers.Dense(256, activation='relu'),
                       layers.Dense(128, activation='relu'),
@@ -29,18 +26,8 @@ network.summary()
 
 optimizer = optimizers.Adam(lr=0.01)
 
-current_time = datetime.datetime.now().strftime("%Y%m%d-%H%M%S")
-log_dir = 'logs/' + current_time
-summary_writer = tf.summary.create_file_writer(log_dir)
-
-# get x from (x,y)
-sample_img = next(iter(db))[0]
-# get first image instance
-sample_img = sample_img[0]
-sample_img = tf.reshape(sample_img, [1, 28, 28, 1])
-
-with summary_writer.as_default():
-    tf.summary.image("Training sample:", sample_img, step=0)
+acc_meter = metrics.Accuracy()
+loss_meter = metrics.Mean()
 
 for step, (x, y) in enumerate(db):
 
@@ -54,23 +41,26 @@ for step, (x, y) in enumerate(db):
         # [b]
         loss = tf.reduce_mean(tf.losses.categorical_crossentropy(y_onehot, out, from_logits=True))
 
+        loss_meter.update_state(loss)
+
     grads = tape.gradient(loss, network.trainable_variables)
     optimizer.apply_gradients(zip(grads, network.trainable_variables))
 
     if step % 100 == 0:
-        print(step, 'loss:', float(loss))
-        with summary_writer.as_default():
-            tf.summary.scalar('train-loss', float(loss), step=step)
+        print(step, 'loss:', loss_meter.result().numpy())
+        loss_meter.reset_states()
 
     # evaluate
     if step % 500 == 0:
         total, total_correct = 0., 0
+        acc_meter.reset_states()
 
-        for _, (x, y) in enumerate(ds_val):
+        for step, (x, y) in enumerate(ds_val):
             # [b, 28, 28] => [b, 784]
             x = tf.reshape(x, (-1, 28 * 28))
             # [b, 784] => [b, 10]
             out = network(x)
+
             # [b, 10] => [b]
             pred = tf.argmax(out, axis=1)
             pred = tf.cast(pred, dtype=tf.int32)
@@ -80,15 +70,6 @@ for step, (x, y) in enumerate(db):
             total_correct += tf.reduce_sum(tf.cast(correct, dtype=tf.int32)).numpy()
             total += x.shape[0]
 
-        print(step, 'Evaluate Acc:', total_correct / total)
+            acc_meter.update_state(y, pred)
 
-        # print(x.shape)
-        val_images = x[:25]
-        val_images = tf.reshape(val_images, [-1, 28, 28, 1])
-        with summary_writer.as_default():
-            tf.summary.scalar('test-acc', float(total_correct / total), step=step)
-            tf.summary.image("val-onebyone-images:", val_images, max_outputs=25, step=step)
-
-            val_images = tf.reshape(val_images, [-1, 28, 28])
-            figure = image_grid(val_images)
-            tf.summary.image('val-images:', plot_to_image(figure), step=step)
+        print(step, 'Evaluate Acc:', total_correct / total, acc_meter.result().numpy())

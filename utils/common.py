@@ -43,3 +43,10 @@ def image_grid(images):
         plt.imshow(images[i], cmap=plt.cm.binary)
 
     return figure
+
+
+def preprocess(x, y):
+    x = tf.cast(x, dtype=tf.float32) / 255.
+    y = tf.cast(y, dtype=tf.int32)
+
+    return x, y
