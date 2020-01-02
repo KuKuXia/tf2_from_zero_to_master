@@ -1,5 +1,8 @@
+import tensorflow as tf
 from tf_01_linear_regression import run
 from tf_12_sort_and_topk import accuracy_demo
+
+tf.random.set_seed(1234)
 
 
 def test_run():
