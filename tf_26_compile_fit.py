@@ -48,9 +48,12 @@ network.fit(db, epochs=5, validation_data=ds_val, validation_freq=2)
 
 network.evaluate(ds_val)
 
-sample = next(iter(ds_val))
+sample = next(iter(ds_val))  # sample: (128, 784) (128, 10)
+
 x = sample[0]
 y = sample[1]
+print(x.shape)
+print(y.shape)
 pred = network.predict(x)  # [b, 10]
 y = tf.argmax(y, axis=1)
 pred = tf.argmax(pred, axis=1)
