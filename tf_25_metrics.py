@@ -26,6 +26,7 @@ network.summary()
 
 optimizer = optimizers.Adam(lr=0.01)
 
+# 定义两个metrics，一个记录精度，一个记录损失
 acc_meter = metrics.Accuracy()
 loss_meter = metrics.Mean()
 
@@ -41,6 +42,7 @@ for step, (x, y) in enumerate(db):
         # [b]
         loss = tf.reduce_mean(tf.losses.categorical_crossentropy(y_onehot, out, from_logits=True))
 
+        # 更新损失
         loss_meter.update_state(loss)
 
     grads = tape.gradient(loss, network.trainable_variables)
@@ -48,11 +50,13 @@ for step, (x, y) in enumerate(db):
 
     if step % 100 == 0:
         print(step, 'loss:', loss_meter.result().numpy())
+        # 清空损失
         loss_meter.reset_states()
 
     # evaluate
     if step % 500 == 0:
         total, total_correct = 0., 0
+        # 清空测试精度
         acc_meter.reset_states()
 
         for step, (x, y) in enumerate(ds_val):
@@ -70,6 +74,7 @@ for step, (x, y) in enumerate(db):
             total_correct += tf.reduce_sum(tf.cast(correct, dtype=tf.int32)).numpy()
             total += x.shape[0]
 
+            # 更新精度
             acc_meter.update_state(y, pred)
 
         print(step, 'Evaluate Acc:', total_correct / total, acc_meter.result().numpy())
