@@ -39,20 +39,24 @@ db_test = db_test.map(preprocess).batch(batch_size)
 sample = next(iter(db_train))
 print(sample[0].shape, sample[1].shape)
 
-network = Sequential([layers.Dense(256, activation='relu'),
-                      layers.Dense(128, activation='relu'),
-                      layers.Dense(64, activation='relu'),
-                      layers.Dense(32, activation='relu'),
+# 添加L2正则化和dropout防止过拟合
+network = Sequential([layers.Dense(256, activation='relu', kernel_regularizer=tf.keras.regularizers.l2(0.001)),
+                      layers.Dropout(0.3),  # 0.5 rate to drop
+                      layers.Dense(128, activation='relu', kernel_regularizer=tf.keras.regularizers.l2(0.001)),
+                      layers.Dropout(0.2),  # 0.5 rate to drop
+                      layers.Dense(64, activation='relu', kernel_regularizer=tf.keras.regularizers.l2(0.001)),
+                      layers.Dropout(0.2),  # 0.5 rate to drop
+                      layers.Dense(32, activation='relu', kernel_regularizer=tf.keras.regularizers.l2(0.001)),
                       layers.Dense(10)])
 network.build(input_shape=(None, 28 * 28))
 network.summary()
 
-network.compile(optimizer=optimizers.Adam(lr=0.01),
+network.compile(optimizer=optimizers.Adam(lr=0.003),
                 loss=tf.losses.CategoricalCrossentropy(from_logits=True),
                 metrics=['accuracy']
                 )
 
-network.fit(db_train, epochs=6, validation_data=db_val, validation_freq=2)
+network.fit(db_train, epochs=50, validation_data=db_val, validation_freq=2)
 
 print('Test performance:')
 network.evaluate(db_test)
