@@ -66,7 +66,7 @@ def main():
             if step % 100 == 0:
                 print(epoch, step, 'loss:', float(loss_ce), float(loss_mse))
 
-        # test
+        # tests
         total_correct = 0
         total_num = 0
         for x, y in db_test:
@@ -90,7 +90,7 @@ def main():
             total_num += x.shape[0]
 
         acc = total_correct / total_num
-        print(epoch, 'test acc:', acc)
+        print(epoch, 'tests acc:', acc)
 
 
 if __name__ == '__main__':

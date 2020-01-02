@@ -80,7 +80,7 @@ for epoch in range(100):  # iterate db for 10
         if step % 100 == 0:
             print(epoch, step, 'loss:', float(loss))
 
-    # test/evluation
+    # tests/evluation
     # [w1, b1, w2, b2, w3, b3]
     total_correct, total_num = 0, 0
     for step, (x, y) in enumerate(test_db):
@@ -109,4 +109,4 @@ for epoch in range(100):  # iterate db for 10
         total_num += x.shape[0]
 
     acc = total_correct / total_num
-    print('test acc:', acc)
+    print('tests acc:', acc)

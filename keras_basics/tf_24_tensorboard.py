@@ -86,7 +86,7 @@ for step, (x, y) in enumerate(db):
         val_images = x[:25]
         val_images = tf.reshape(val_images, [-1, 28, 28, 1])
         with summary_writer.as_default():
-            tf.summary.scalar('test-acc', float(total_correct / total), step=step)
+            tf.summary.scalar('tests-acc', float(total_correct / total), step=step)
             tf.summary.image("val-onebyone-images:", val_images, max_outputs=25, step=step)
 
             val_images = tf.reshape(val_images, [-1, 28, 28])

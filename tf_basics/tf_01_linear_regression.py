@@ -7,6 +7,7 @@ y: real, ground-truth
 Linear regression
 Y = WX + b + epsilon
 """
+
 import numpy as np
 
 
@@ -47,7 +48,7 @@ def gradient_descent_runner(points, starting_b, starting_w, learning_rate, num_i
 
 
 def run():
-    points = np.genfromtxt("../data/data.csv", delimiter=",")
+    points = np.genfromtxt('../data/data.csv', delimiter=",")
     learning_rate = 0.0001
     initial_b = 0  # initial y-intercept guess
     initial_w = 0  # initial slope guess

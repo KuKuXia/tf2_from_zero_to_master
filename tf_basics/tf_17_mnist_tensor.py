@@ -24,7 +24,7 @@ def preprocess(x, y):
 
 
 (x, y), (x_test, y_test) = datasets.mnist.load_data()
-print('x:', x.shape, 'y:', y.shape, 'x test:', x_test.shape, 'y test:', y_test)
+print('x:', x.shape, 'y:', y.shape, 'x tests:', x_test.shape, 'y tests:', y_test)
 train_db = tf.data.Dataset.from_tensor_slices((x, y))
 train_db = train_db.shuffle(60000).batch(128).map(preprocess).repeat(30)
 
