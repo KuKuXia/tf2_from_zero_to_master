@@ -47,12 +47,12 @@ network.fit(db, epochs=3, validation_data=ds_val, validation_freq=2)
 network.evaluate(ds_val)
 
 # 保存整个网络结构和权重，不需要重新定义build模型结构
-network.save('./model/model.h5')
+network.save('../model/model.h5')
 print('saved total model.')
 del network
 
 print('loaded model from file.')
-network = tf.keras.models.load_model('./model/model.h5', compile=False)
+network = tf.keras.models.load_model('../model/model.h5', compile=False)
 network.compile(optimizer=optimizers.Adam(lr=0.01),
                 loss=tf.losses.CategoricalCrossentropy(from_logits=True),
                 metrics=['accuracy']
@@ -62,12 +62,12 @@ network.evaluate(ds_val)
 
 # 生产环境部署
 print('Save served model')
-tf.saved_model.save(network, './model/server_model')
+tf.saved_model.save(network, '../model/server_model')
 print('Delete model')
 del network
 
 print('Load served model')
-imported = tf.saved_model.load('./model/server_model')
+imported = tf.saved_model.load('../model/server_model')
 f = imported.signatures['serving_default']
 
 # 直接inference输出预测结果

@@ -47,7 +47,7 @@ network.fit(db, epochs=3, validation_data=ds_val, validation_freq=2)
 network.evaluate(ds_val)
 
 # 仅仅是保存了模型的权重参数，并不是整个网络结构也保存了，因此load权重之前需要重新build和compile一样结构的模型
-network.save_weights('./model/weights.ckpt')
+network.save_weights('../model/weights.ckpt')
 print('saved weights.')
 del network
 
@@ -60,6 +60,6 @@ network.compile(optimizer=optimizers.Adam(lr=0.01),
                 loss=tf.losses.CategoricalCrossentropy(from_logits=True),
                 metrics=['accuracy']
                 )
-network.load_weights('./model/weights.ckpt')
+network.load_weights('../model/weights.ckpt')
 print('loaded weights!')
 network.evaluate(ds_val)

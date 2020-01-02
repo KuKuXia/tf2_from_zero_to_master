@@ -30,7 +30,7 @@ network.summary()
 optimizer = optimizers.Adam(lr=0.01)
 
 current_time = datetime.datetime.now().strftime("%Y%m%d-%H%M%S")
-log_dir = 'logs/' + current_time
+log_dir = '../logs/' + current_time
 summary_writer = tf.summary.create_file_writer(log_dir)
 
 # get x from (x,y)
