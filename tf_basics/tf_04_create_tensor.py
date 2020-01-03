@@ -1,8 +1,13 @@
 """
 创建张量
 """
+import os
+
 import numpy as np
 import tensorflow as tf
+
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
+print("Num GPUs Available: ", len(tf.config.experimental.list_physical_devices('GPU')))
 
 # 利用numpy，list创建张量
 # 创建全为1的张量

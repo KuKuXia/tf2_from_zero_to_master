@@ -1,8 +1,12 @@
 """
 Tensorflow数学运算
 """
+import os
+
 import tensorflow as tf
 
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
+print("Num GPUs Available: ", len(tf.config.experimental.list_physical_devices('GPU')))
 a = tf.ones([2, 2])
 b = tf.fill([2, 2], 2.)
 

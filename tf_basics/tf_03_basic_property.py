@@ -1,5 +1,10 @@
+import os
+
 import numpy as np
 import tensorflow as tf
+
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
+print("Num GPUs Available: ", len(tf.config.experimental.list_physical_devices('GPU')))
 
 # Tensor Property
 print("Tensor Property: ")
@@ -14,7 +19,7 @@ print(b.device)
 
 aa = a.gpu()  # 将cpu数据转为gpu数据
 bb = b.cpu()
-print(aa.device)
+# print(aa.device)
 print(bb.device)
 
 print(b.numpy())  # 将tensor转换为numpy

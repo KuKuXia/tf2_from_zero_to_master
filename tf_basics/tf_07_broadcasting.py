@@ -2,7 +2,12 @@
 Broadcasting: 对张量的维度进行扩展的手段，指对某一个维度重复n多次，但是并没有真正的复制数据
 tf.tile:对张量某个维度进行显式的复制n多次数据，并且会真实地在数据上体现出来
 """
+import os
+
 import tensorflow as tf
+
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
+print("Num GPUs Available: ", len(tf.config.experimental.list_physical_devices('GPU')))
 
 # Broadcasting
 a = tf.random.normal([4, 32, 32, 3])

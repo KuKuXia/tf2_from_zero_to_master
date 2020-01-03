@@ -2,8 +2,12 @@
 Transformation
 """
 
+import os
+
 import tensorflow as tf
 
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
+print("Num GPUs Available: ", len(tf.config.experimental.list_physical_devices('GPU')))
 # Reshape
 a = tf.random.normal([4, 28, 28, 3])
 print(f'shape of a: {a.shape}, ndim of a: {a.ndim}')

@@ -2,7 +2,12 @@
 合并与分割
 """
 
+import os
+
 import tensorflow as tf
+
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
+print("Num GPUs Available: ", len(tf.config.experimental.list_physical_devices('GPU')))
 
 # Statistics about scores
 # data: [classes, students, scores]
