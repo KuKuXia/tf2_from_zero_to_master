@@ -24,6 +24,8 @@ ds_val = tf.data.Dataset.from_tensor_slices((x_val, y_val))
 ds_val = ds_val.map(preprocess).batch(batch_size)
 
 # 利用dropout防止过拟合
+# 需要注意使用`dropout`之后，在训练和测试时，模型需要传入一个参数，`training=True or False`
+
 network = Sequential([layers.Dense(256, activation='relu'),
                       layers.Dropout(0.5),  # 0.5 rate to drop
                       layers.Dense(128, activation='relu'),
@@ -42,7 +44,7 @@ for step, (x, y) in enumerate(db):
         # [b, 28, 28] => [b, 784]
         x = tf.reshape(x, (-1, 28 * 28))
         # [b, 784] => [b, 10]
-        out = network(x, training=True)
+        out = network(x, training=True)  # 使用dropout
         # [b] => [b, 10]
         y_onehot = tf.one_hot(y, depth=10)
         # [b]
@@ -69,7 +71,7 @@ for step, (x, y) in enumerate(db):
             # [b, 28, 28] => [b, 784]
             x = tf.reshape(x, (-1, 28 * 28))
             # [b, 784] => [b, 10]
-            out = network(x, training=True)
+            out = network(x, training=True)  # 取消dropout
             # [b, 10] => [b]
             pred = tf.argmax(out, axis=1)
             pred = tf.cast(pred, dtype=tf.int32)
@@ -87,7 +89,7 @@ for step, (x, y) in enumerate(db):
             # [b, 28, 28] => [b, 784]
             x = tf.reshape(x, (-1, 28 * 28))
             # [b, 784] => [b, 10]
-            out = network(x, training=False)
+            out = network(x, training=False)  # 保留dropout
             # [b, 10] => [b]
             pred = tf.argmax(out, axis=1)
             pred = tf.cast(pred, dtype=tf.int32)
