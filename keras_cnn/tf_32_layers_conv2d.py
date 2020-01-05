@@ -72,3 +72,40 @@ x = tf.random.normal([2, 3])
 print(x)
 print(tf.nn.relu(x))
 print(layers.ReLU()(x))
+
+
+# Image Normalization
+def normalize(x, mena, std):
+    # [b, h, w, c]
+    x = x - mena
+    x = x / std
+    return x
+
+
+# BatchNormalization
+net = layers.BatchNormalization(axis=-1)
+x = tf.random.normal([2, 4, 4, 10], mean=1, stddev=0.5)
+
+# 默认training=None，代表是在测试模式，所以BN层的参数是不会更新的
+out = net(x)
+print(net.trainable_variables)
+print(net.variables)
+
+out_1 = net(x, training=True)
+print(net.variables)
+
+# 设置training=True，所以BP的时候会更新参数
+for i in range(100):
+    out = net(x, training=True)
+print(net.variables)
+
+# 观察bn的参数变化
+optimizer = tf.keras.optimizers.SGD(lr=1e-2)
+for i in range(10):
+    with tf.GradientTape() as tape:
+        out = net(x, training=True)
+        loss = tf.reduce_mean(tf.pow(out, 2)) - 1
+
+    grads = tape.gradient(loss, net.trainable_variables)
+    optimizer.apply_gradients(zip(grads, net.trainable_variables))
+print('backward(10 steps):', net.variables)

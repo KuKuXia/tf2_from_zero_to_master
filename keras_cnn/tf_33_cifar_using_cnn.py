@@ -52,7 +52,7 @@ y_test = tf.squeeze(y_test, axis=1)
 print(x.shape, y.shape, x_test.shape, y_test.shape)
 
 train_db = tf.data.Dataset.from_tensor_slices((x, y))
-train_db = train_db.shuffle(1000).map(preprocess).batch(128)
+train_db = train_db.shuffle(1000).map(preprocess).batch(512)
 
 test_db = tf.data.Dataset.from_tensor_slices((x_test, y_test))
 test_db = test_db.map(preprocess).batch(64)
@@ -74,6 +74,8 @@ def main():
 
     conv_net.build(input_shape=[None, 32, 32, 3])
     fc_net.build(input_shape=[None, 512])
+    conv_net.summary()
+    fc_net.summary()
     optimizer = optimizers.Adam(lr=1e-4)
 
     # [1, 2] + [3, 4] => [1, 2, 3, 4]
