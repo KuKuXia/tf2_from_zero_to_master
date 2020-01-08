@@ -12,7 +12,6 @@ os.environ['CUDA_VISIBLE_DEVICES'] = '2'
 
 tf.random.set_seed(22)
 np.random.seed(22)
-assert tf.__version__.startswith('2.')
 
 
 def save_result(val_out, val_block_size, image_path, color_mode):
