@@ -5,7 +5,7 @@ from tensorflow import keras
 from tensorflow.keras import layers, optimizers, datasets
 
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
-
+os.environ['CUDA_VISIBLE_DEVICES'] = '2'
 (x, y), (x_val, y_val) = datasets.mnist.load_data()
 x = tf.convert_to_tensor(x, dtype=tf.float32) / 255.
 y = tf.convert_to_tensor(y, dtype=tf.int32)
