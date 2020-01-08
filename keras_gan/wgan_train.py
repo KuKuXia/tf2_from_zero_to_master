@@ -79,19 +79,19 @@ def celoss_zeros(logits):
 
 
 def gradient_penalty(discriminator, batch_x, fake_image):
-    batchsz = batch_x.shape[0]
+    batch_size = batch_x.shape[0]
 
     # [b, h, w, c]
-    t = tf.random.uniform([batchsz, 1, 1, 1])
+    t = tf.random.uniform([batch_size, 1, 1, 1])
     # [b, 1, 1, 1] => [b, h, w, c]
     t = tf.broadcast_to(t, batch_x.shape)
 
-    interplate = t * batch_x + (1 - t) * fake_image
+    interpolate = t * batch_x + (1 - t) * fake_image
 
     with tf.GradientTape() as tape:
-        tape.watch([interplate])
-        d_interplote_logits = discriminator(interplate, training=True)
-    grads = tape.gradient(d_interplote_logits, interplate)
+        tape.watch([interpolate])
+        d_interlope_logits = discriminator(interpolate, training=True)
+    grads = tape.gradient(d_interlope_logits, interpolate)
 
     # grads:[b, h, w, c] => [b, -1]
     grads = tf.reshape(grads, [grads.shape[0], -1])
