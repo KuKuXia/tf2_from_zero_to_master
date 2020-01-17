@@ -8,7 +8,7 @@ os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
 os.environ['CUDA_VISIBLE_DEVICES'] = '0,2'
 
 num_epochs = 5
-batch_size_per_replica = 64
+batch_size_per_replica = 256
 learning_rate = 0.001
 
 num_workers = 2
@@ -30,7 +30,9 @@ def resize(image, label):
 
 
 dataset = tfds.load("cats_vs_dogs", split=tfds.Split.TRAIN, as_supervised=True)
-dataset = dataset.map(resize).shuffle(1024).batch(batch_size)
+
+# 切记这个地方要添加repeat(),不然只能训练一个epoch,然后会报错
+dataset = dataset.map(resize).shuffle(1024).batch(batch_size).repeat()
 
 with strategy.scope():
     model = tf.keras.applications.MobileNetV2()
