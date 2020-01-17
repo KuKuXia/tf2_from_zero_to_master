@@ -4,6 +4,7 @@ logs/
 model/
 save/
 data/
+local_note*
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

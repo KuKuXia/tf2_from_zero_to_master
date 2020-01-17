@@ -15,7 +15,7 @@ num_workers = 2
 
 os.environ['TF_CONFIG'] = json.dumps({
     'cluster': {
-        'worker': ["localhost:20000", "localhost:20001"]
+        'worker': ["localhost:20000", "180.201.13.2:20001"]
     },
     'task': {'type': 'worker', 'index': 0}
 })
